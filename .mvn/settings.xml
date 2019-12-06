@@ -1,0 +1,23 @@
+<?xml version="1.0"?> 
+<settings>
+    <mirrors>
+        <mirror>
+            <id>internal-repository</id>
+            <name>Maven Repository Manager at Digipolis</name>
+            <url>http://nexus-release-management.servicesqa.local/repository/maven-public/</url>
+            <mirrorOf>digipolis_nexus</mirrorOf>
+        </mirror>
+    </mirrors>
+    <servers>
+        <server>
+            <id>digipolis_nexus_snapshots</id>
+            <username>jenkinsci</username>
+            <password>jenkinsci1234</password>
+        </server>
+        <server>
+            <id>digipolis_nexus_releases</id>
+            <username>jenkinsci</username>
+            <password>jenkinsci1234</password>
+        </server>
+    </servers>
+</settings>
