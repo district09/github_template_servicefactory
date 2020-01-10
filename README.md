@@ -17,10 +17,17 @@ We run integration tests on our applications in CICD using the [Karate framework
 
 Here you can find all environment variables that are used to make the application work. Set these envars on your local machine or feed them to your dockers. 
 
-#### component-api ####
+#### component-1 ####
 
 Envar | Required | Default | Description
-:---:|:---:|:---:|:---:
+:---|:---:|:---:|:---
+1 | **yes** | default | 2
+2 | no | no-default | 3
+
+#### component-2 ####
+
+Envar | Required | Default | Description
+:---|:---:|:---:|:---
 1 | **yes** | default | 2
 2 | no | no-default | 3
 
