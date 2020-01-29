@@ -65,7 +65,20 @@ objects:
         - name: ARTIFACT_DIR
           value: api/target
         - name: MAVEN_ARGS
-          value: ""
+          valueFrom:
+            configMapKeyRef:
+              key: MAVEN_ARGS
+              name: dg-build-configmap
+        - name: NEXUS_USER
+          valueFrom:
+            secretKeyRef: 
+              name: dg-build-secrets
+              key: NEXUS_USER
+        - name: NEXUS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dg-build-secrets
+              key: NEXUS_PASSWORD
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
@@ -110,9 +123,22 @@ objects:
       sourceStrategy:
         env:
         - name: ARTIFACT_DIR
-          value: worker/target
+          value: api/target
         - name: MAVEN_ARGS
-          value: ""
+          valueFrom:
+            configMapKeyRef:
+              key: MAVEN_ARGS
+              name: dg-build-configmap
+        - name: NEXUS_USER
+          valueFrom:
+            secretKeyRef: 
+              name: dg-build-secrets
+              key: NEXUS_USER
+        - name: NEXUS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dg-build-secrets
+              key: NEXUS_PASSWORD
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
