@@ -13,9 +13,20 @@ Read the [documentation](./dev-utils/README.md) provided in the dev-utils folder
 
 We run integration tests on our applications in CICD using the [Karate framework](https://github.com/intuit/karate). See the [testing documentation](./karate/README.md) on how to run the tests locally and more information. 
 
-## Environment variables ##
+## Build environment variables ##
 
-Here you can find all environment variables that are used to make the application work. Set these envars on your local machine or feed them to your dockers. 
+Here you will find all environment variables used in an s2i build to docker or openshift. Feed these envars to your local s2i build or openshift build config.
+
+Envar | Required | Default | Description
+:---|:---:|:---:|:---
+MAVEN_ARGS | if maven build | see openshift configmap | The Maven arguments used in a s2i build
+ARTIFACT_DIR | if maven build | target | The artifact dir that s2i get its compiled binary's from
+NEXUS_PASSWORD | if using digipolis nexus | in openshift secret | Pasword to connect to the Digipolis Nexus
+NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to the Digipolis Nexus
+
+## Deployment environment variables ##
+
+Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
 
 #### component-1 ####
 
@@ -53,6 +64,7 @@ AMQ_DLQ
 AMQ_EVENT_XXX
 AMQ_QUEUE_XXX
 AMQ_TOPIC_XXX
+AMQ_POOL
 
 ##### Application specifics #####
 APP_ENVIRONMENT

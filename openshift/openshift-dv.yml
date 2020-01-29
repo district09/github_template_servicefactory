@@ -180,49 +180,49 @@ objects:
       spec:
         containers:
         - env:
-          - name: SPRING_DATASOURCE_PASSWORD
+          - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_USERNAME
+                key: DB_PASSWORD
+          - name: DB_USER
             valueFrom: 
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_ACTIVEMQ_PASSWORD
+                key: DB_USER
+          - name: AMQ_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_ACTIVEMQ_PASSWORD
-          - name: SPRING_ACTIVEMQ_USER
+                key: AMQ_PASSWORD
+          - name: AMQ_USER
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_ACTIVEMQ_USER
-          - name: SPRING_ACTIVEMQ_BROKER_URL
+                key: AMQ_USER
+          - name: AMQ_HOST
             value: ""
-          - name: SPRING_ACTIVEMQ_POOL_ENABLED
+          - name: AMQ_POOL
             value: "true"
-          - name: QUEUE_PREFIX
+          - name: AMQ_QUEUE_PREFIX
             value: businessdomaindv.notification-services.v1.component
-          - name: QUEUE_CREATION
+          - name: AMQ_QUEUE_CREATION
             value: creation
-          - name: QUEUE_UPDATE
+          - name: AMQ_QUEUE_UPDATE
             value: update
-          - name: QUEUE_ARCHIVE
+          - name: AMQ_QUEUE_ARCHIVE
             value: archive
-          - name: QUEUE_COMPLETION
+          - name: AMQ_QUEUE_COMPLETION
             value: completion
-          - name: SPRING_DATASOURCE_URL
+          - name: DB_HOST
             value: ""
           - name: SPRING_PROFILES_ACTIVE
             value: "production"
-          - name: "API_NAMESPACE_PREFIX"
+          - name: "APP_NAMESPACE_PREFIX"
             value: "businessdomain/component"
-          - name: "APPLICATION_LOG_LEVEL"
+          - name: "APP_LOG_LEVEL"
             value: "INFO"
-          - name: "SERVICE_MOCKING_ENABLED"
+          - name: "APP_MOCKING"
             value: "FALSE"
           image: docker-registry.default.svc:5000/openshiftprojectdv/component-api:latest
           imagePullPolicy: Always
@@ -299,49 +299,49 @@ objects:
       spec:
         containers:
         - env:
-          - name: SPRING_DATASOURCE_PASSWORD
+          - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_USERNAME
+                key: DB_PASSWORD
+          - name: DB_USER
             valueFrom: 
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_ACTIVEMQ_PASSWORD
+                key: DB_USER
+          - name: AMQ_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_ACTIVEMQ_PASSWORD
-          - name: SPRING_ACTIVEMQ_USER
+                key: AMQ_PASSWORD
+          - name: AMQ_USER
             valueFrom:
               secretKeyRef:
                 name: component-secrets
-                key: SPRING_ACTIVEMQ_USER
-          - name: SPRING_ACTIVEMQ_BROKER_URL
+                key: AMQ_USER
+          - name: AMQ_HOST
             value: ""
-          - name: SPRING_ACTIVEMQ_POOL_ENABLED
+          - name: AMQ_POOL
             value: "true"
-          - name: QUEUE_PREFIX
+          - name: AMQ_QUEUE_PREFIX
             value: businessdomaindv.notification-services.v1.component
-          - name: QUEUE_CREATION
+          - name: AMQ_QUEUE_CREATION
             value: creation
-          - name: QUEUE_UPDATE
+          - name: AMQ_QUEUE_UPDATE
             value: update
-          - name: QUEUE_ARCHIVE
+          - name: AMQ_QUEUE_ARCHIVE
             value: archive
-          - name: QUEUE_COMPLETION
+          - name: AMQ_QUEUE_COMPLETION
             value: completion
-          - name: SPRING_DATASOURCE_URL
+          - name: DB_HOST
             value: ""
           - name: SPRING_PROFILES_ACTIVE
             value: "production"
-          - name: "API_NAMESPACE_PREFIX"
-            value: "businessdomain/component-worker"
-          - name: "APPLICATION_LOG_LEVEL"
+          - name: "APP_NAMESPACE_PREFIX"
+            value: "businessdomain/component"
+          - name: "APP_LOG_LEVEL"
             value: "INFO"
-          - name: "SERVICE_MOCKING_ENABLED"
+          - name: "APP_MOCKING"
             value: "FALSE"
           image: docker-registry.default.svc:5000/openshiftprojectdv/component-worker:latest
           imagePullPolicy: Always
