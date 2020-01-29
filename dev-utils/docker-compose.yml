@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  mssql:
+    image: mssql
+    ports:
+    - "1433:1433"
+  amq:
+    image: registry.access.redhat.com/jboss-amq-6/amq63-openshift
+    ports:
+    - "61616:61616"
+    - "61613:61613"
+    - "1883:1883"

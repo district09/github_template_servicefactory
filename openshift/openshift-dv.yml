@@ -3,45 +3,45 @@ parameters:
 apiVersion: v1
 kind: Template
 metadata:
-  name: notification-sms
+  name: notification-component
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: sms-api
-    namespace: servicefactorydv
+    name: component-api
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
   spec:
     lookupPolicy:
       local: false
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: sms-worker
-    namespace: servicefactorydv
+    name: component-worker
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
   spec:
     lookupPolicy:
       local: false
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: sms-api
-    namespace: servicefactorydv
+    name: component-api
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
   spec:
     failedBuildsHistoryLimit: 2
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: sms-api:latest
+        name: component-api:latest
     postCommit: {}
     completionDeadlineSeconds: 600
     resources:
@@ -55,7 +55,7 @@ objects:
     source:
       git:
         ref: "master"
-        uri: git@github.com:digipolisgent/java_service_sms.git
+        uri: git@github.com:digipolisgent/java_service_component.git
       sourceSecret:
         name: digipolisgent-ci
       type: Git
@@ -64,6 +64,8 @@ objects:
         env:
         - name: ARTIFACT_DIR
           value: api/target
+        - name: MAVEN_ARGS
+          value: ""
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
@@ -75,18 +77,18 @@ objects:
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: sms-worker
-    namespace: servicefactorydv
+    name: component-worker
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
   spec:
     failedBuildsHistoryLimit: 2
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: sms-worker:latest
+        name: component-worker:latest
     postCommit: {}
     completionDeadlineSeconds: 600
     resources:
@@ -100,7 +102,7 @@ objects:
     source:
       git:
         ref: "master"
-        uri: git@github.com:digipolisgent/java_service_sms.git
+        uri: git@github.com:digipolisgent/java_service_component.git
       sourceSecret:
         name: digipolisgent-ci
       type: Git
@@ -109,6 +111,8 @@ objects:
         env:
         - name: ARTIFACT_DIR
           value: worker/target
+        - name: MAVEN_ARGS
+          value: ""
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
@@ -120,16 +124,16 @@ objects:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
-    name: sms-api
-    namespace: servicefactorydv
+    name: component-api
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
   spec:
     replicas: 1
     selector:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
     strategy:
       activeDeadlineSeconds: 660
       resources: {}
@@ -142,35 +146,40 @@ objects:
       type: Rolling
     template:
       metadata:
-        name: sms-api
-        namespace: servicefactorydv
+        name: component-api
+        namespace: openshiftprojectdv
         labels:
-          app: notification-sms
-          component: sms-api
+          app: notification-component
+          component: component-api
       spec:
         containers:
         - env:
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_DATASOURCE_PASSWORD
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom: 
+              secretKeyRef:
+                name: component-secrets
+                key: SPRING_DATASOURCE_USERNAME
           - name: SPRING_ACTIVEMQ_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_ACTIVEMQ_PASSWORD
           - name: SPRING_ACTIVEMQ_USER
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_ACTIVEMQ_USER
           - name: SPRING_ACTIVEMQ_BROKER_URL
-            value: "tcp://10.54.27.193:61616"
+            value: ""
           - name: SPRING_ACTIVEMQ_POOL_ENABLED
             value: "true"
           - name: QUEUE_PREFIX
-            value: supportingdv.notification-services.v1.sms
+            value: businessdomaindv.notification-services.v1.component
           - name: QUEUE_CREATION
             value: creation
           - name: QUEUE_UPDATE
@@ -180,23 +189,21 @@ objects:
           - name: QUEUE_COMPLETION
             value: completion
           - name: SPRING_DATASOURCE_URL
-            value: "jdbc:sqlserver://sql_db_GG_SF_SMSNotification_DV.gentgrp.gent.be;databaseName=GG_SF_SMSNotification_DV"
-          - name: SPRING_DATASOURCE_USERNAME
-            value: "GG_SF_SMSNotification_DVAdmin1"
+            value: ""
           - name: SPRING_PROFILES_ACTIVE
             value: "production"
           - name: "API_NAMESPACE_PREFIX"
-            value: "supporting/sms"
+            value: "businessdomain/component"
           - name: "APPLICATION_LOG_LEVEL"
             value: "INFO"
           - name: "SERVICE_MOCKING_ENABLED"
             value: "FALSE"
-          image: docker-registry.default.svc:5000/servicefactorydv/sms-api:latest
+          image: docker-registry.default.svc:5000/openshiftprojectdv/component-api:latest
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 30
             httpGet:
-              path: /supporting/sms/v2/status/am-i-up
+              path: /businessdomain/component/v2/status/am-i-up
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 120
@@ -206,14 +213,14 @@ objects:
           readinessProbe:
             failureThreshold: 30
             httpGet:
-              path: /supporting/sms/v2/status/aggregate
+              path: /businessdomain/component/v2/status/aggregate
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 120
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
-          name: sms-api
+          name: component-api
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -236,16 +243,16 @@ objects:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
-    name: sms-worker
-    namespace: servicefactorydv
+    name: component-worker
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
   spec:
     replicas: 1
     selector:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
     strategy:
       activeDeadlineSeconds: 660
       resources: {}
@@ -258,42 +265,40 @@ objects:
       type: Rolling
     template:
       metadata:
-        name: sms-worker
-        namespace: servicefactorydv
+        name: component-worker
+        namespace: openshiftprojectdv
         labels:
-          app: notification-sms
-          component: sms-worker
+          app: notification-component
+          component: component-worker
       spec:
         containers:
         - env:
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_DATASOURCE_PASSWORD
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom: 
+              secretKeyRef:
+                name: component-secrets
+                key: SPRING_DATASOURCE_USERNAME
           - name: SPRING_ACTIVEMQ_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_ACTIVEMQ_PASSWORD
           - name: SPRING_ACTIVEMQ_USER
             valueFrom:
               secretKeyRef:
-                name: sms-secrets
+                name: component-secrets
                 key: SPRING_ACTIVEMQ_USER
-          - name: MESSAGE_BIRD_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: sms-secrets
-                key: MESSAGEBIRD_ACCESSKEY
-          - name: MESSAGE_BIRD_PHONE_NUMBER
-            value: "00999999999"
           - name: SPRING_ACTIVEMQ_BROKER_URL
-            value: "tcp://10.54.27.193:61616"
+            value: ""
           - name: SPRING_ACTIVEMQ_POOL_ENABLED
             value: "true"
           - name: QUEUE_PREFIX
-            value: supportingdv.notification-services.v1.sms
+            value: businessdomaindv.notification-services.v1.component
           - name: QUEUE_CREATION
             value: creation
           - name: QUEUE_UPDATE
@@ -303,23 +308,21 @@ objects:
           - name: QUEUE_COMPLETION
             value: completion
           - name: SPRING_DATASOURCE_URL
-            value: "jdbc:sqlserver://sql_db_GG_SF_SMSNotification_DV.gentgrp.gent.be;databaseName=GG_SF_SMSNotification_DV"
-          - name: SPRING_DATASOURCE_USERNAME
-            value: "GG_SF_SMSNotification_DVAdmin1"
+            value: ""
           - name: SPRING_PROFILES_ACTIVE
             value: "production"
           - name: "API_NAMESPACE_PREFIX"
-            value: "supporting/sms-worker"
+            value: "businessdomain/component-worker"
           - name: "APPLICATION_LOG_LEVEL"
             value: "INFO"
           - name: "SERVICE_MOCKING_ENABLED"
             value: "FALSE"
-          image: docker-registry.default.svc:5000/servicefactorydv/sms-worker:latest
+          image: docker-registry.default.svc:5000/openshiftprojectdv/component-worker:latest
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 30
             httpGet:
-              path: /supporting/sms-worker/v2/status/am-i-up
+              path: /businessdomain/component-worker/v2/status/am-i-up
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 120
@@ -329,14 +332,14 @@ objects:
           readinessProbe:
             failureThreshold: 30
             httpGet:
-              path: /supporting/sms-worker/v2/status/aggregate
+              path: /businessdomain/component-worker/v2/status/aggregate
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 120
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
-          name: sms-worker
+          name: component-worker
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -359,38 +362,38 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: sms-api
-    namespace: servicefactorydv
+    name: component-api
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
   spec:
     ports:
-    - name: 8080-tcp
+    - name: 8080
       port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
-      app: notification-sms
-      component: sms-api
+      app: notification-component
+      component: component-api
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
   kind: Service
   metadata:
-    name: sms-worker
-    namespace: servicefactorydv
+    name: component-worker
+    namespace: openshiftprojectdv
     labels:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
   spec:
     ports:
-    - name: 8080-tcp
+    - name: 8080
       port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
-      app: notification-sms
-      component: sms-worker
+      app: notification-component
+      component: component-worker
     sessionAffinity: None
     type: ClusterIP

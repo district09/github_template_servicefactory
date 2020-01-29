@@ -32,6 +32,14 @@ This script will make local docker images with s2i using the source code from th
 $ build_develop.sh
 ```
 
+## Run the application ##
+
+If you have run the build scripts previously and just want to start the application you can do so with docker-compose. 
+
+```
+$ docker-compose up
+```
+
 ## If all else fails, i.e. I do not use docker  ##
 ### Java ###
 
