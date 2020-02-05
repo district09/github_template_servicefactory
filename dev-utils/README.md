@@ -5,6 +5,15 @@
 * [s2i](https://github.com/openshift/source-to-image)
 * [docker](https://www.docker.com/)
 
+## Digipolis Package Repositories ##
+### .NetCore ###
+Add nuget.config to your local setup. Add Digipolis Myget.org credentials to nuget.config. Ask servicefactory [at] digipolis [dot] gent for credentials.
+Find more information on nuget.config [here](https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior). 
+### Java ###
+All required configuration files are provided in this repository.
+Set envars for NEXUS_USER & NEXUS_PASSWORD. Ask servicefactory [at] digipolis [dot] gent for credentials.
+### Node ###
+
 ## Environmental variables ##
 
 Set up these envars in your local machine to make the application go. You can find all the neccesary envars [here](../README.md#environment-variables). 
