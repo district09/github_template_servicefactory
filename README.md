@@ -2,6 +2,10 @@
 
 *Insert short description of the application here.*
 
+## Security ##
+
+Never store any secrets, keys, credentials or passwords in a repository! Always use envars or placeholders in configuration files and settings. 
+
 ## Source code ##
 * Add all source code to the [src](./src) folder.
 
@@ -121,3 +125,8 @@ Log and track issues in our [Jira](https://digipolisgent.atlassian.net/)
 * [Developer Portal DV](https://developerdv.gent.be/)
 * [Developer Portal DV](https://developerqa.gent.be/)
 * [Developer Portal DV](https://developer.gent.be/)
+
+## Documentation Version ##
+Version | Date | Description | Author
+:---:|:---:|:---:|:---:
+0.1 | 2020/02/05 | Initial documentation | Digipolis
