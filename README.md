@@ -1,10 +1,21 @@
 # README #
-
 *Insert short description of the application here.*
 
 ## Security ##
+Always keep following security rules in mind when using credentials (apiKeys, passwords, tenantId's, secrets, ...). By asking and using Digipolis credentials you agree to and respect these security rules. Share there rules among all developers.
 
-Never store any secrets, keys, credentials or passwords in a repository! Always use envars or placeholders in configuration files and settings. 
+Direct all your security questions and problems to security [dot] office [at] digipolis [dot] gent
+
+### Do's ### 
+* Always store credentials in environment variables
+* If not possible check if alternatives exist for your technology
+* Share credentials using point-to-point communication (email, im, ...) (not: ticketing systems, group chats, ...)
+* Avoid sharing credentials after initial exchange
+### Don'ts ### 
+* Don't hard code credentials
+* Don't communicate credentials with clients (client side storage, client side code, ...)
+* Don't store credentials in public or private repositories (Github, Bitbucket, ...)
+* Don't store credentials in documentation (Confluence, Jira, ...)
 
 ## Source code ##
 * Add all source code to the [src](./src) folder.
@@ -13,15 +24,12 @@ Never store any secrets, keys, credentials or passwords in a repository! Always 
 * [OpenAPI & asyncAPI](./openapi/README.md)
 
 ## Running locally ##
-
 Read the [documentation](./dev-utils/README.md) provided in the dev-utils folder to build and run the application locally.
 
 ## Testing the application ##
-
 We run integration tests on our applications in CICD using the [Karate framework](https://github.com/intuit/karate). See the [testing documentation](./karate/README.md) on how to run the tests locally and more information. 
 
 ## Build environment variables ##
-
 Here you will find all environment variables used in an s2i build to docker or openshift. Feed these envars to your local s2i build or openshift build config.
 
 Envar | Required | Default | Description
@@ -32,25 +40,21 @@ NEXUS_PASSWORD | if using digipolis nexus | in openshift secret | Pasword to con
 NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to the Digipolis Nexus
 
 ## Deployment environment variables ##
-
 Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
 
 #### component-1 ####
-
 Envar | Required | Default | Description
 :---|:---:|:---:|:---
 1 | **yes** | default | 2
 2 | no | no-default | 3
 
 #### component-2 ####
-
 Envar | Required | Default | Description
 :---|:---:|:---:|:---
 1 | **yes** | default | 2
 2 | no | no-default | 3
 
 #### List of required envars ####
-
 ##### Database #####
 * DB_USER (Secret)
 * DB_PASSWORD (Secret)
@@ -58,6 +62,7 @@ Envar | Required | Default | Description
 * DB_PORT
 * DB_PROTOCOL
 * DB_DRIVER
+* DB_CONNECTION_STRING
 
 ##### Event broker #####
 * AMQ_USER/AMQ_USER_XXX (Secret)
@@ -72,8 +77,8 @@ Envar | Required | Default | Description
 * AMQ_QUEUE_XXX
 * AMQ_TOPIC_XXX
 * AMQ_POOL
-##### Application specifics #####
 
+##### Application specifics #####
 * APP_ENVIRONMENT
 * APP_LOG_LEVEL
 * APP_MOCKING
@@ -104,7 +109,6 @@ Envar | Required | Default | Description
 * API_URL_XXX
 
 ## CICD ##
-
 Mainly [Jenkins](https://jenkins.io/) in combination with [Openshift Container Platform](https://www.openshift.com/) and other cloud based platforms are used for builds and deployments onto the Digipolis Service Factory.
 
 See the [Jenkinsfile](./Jenkinsfile) to define the CICD pipiline. 
@@ -112,11 +116,9 @@ See the [Jenkinsfile](./Jenkinsfile) to define the CICD pipiline.
 See the [openshift](./openshift/README.md) folder to define the Openshift configuration. 
 
 ## Issues ##
-
 Log and track issues in our [Jira](https://digipolisgent.atlassian.net/)
 
 ### Architecture ###
-
 *Insert Architecture Design here.*
 
 ## API Documentation ##
