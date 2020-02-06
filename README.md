@@ -129,6 +129,9 @@ Log and track issues in our [Jira](https://digipolisgent.atlassian.net/)
 * [Developer Portal DV](https://developer.gent.be/)
 
 ## Documentation Version ##
+
+Find the latest version of this template repository [here](https://github.com/digipolisgent/github_template_servicefactory) on Github. 
+
 Version | Date | Description | Author
 :---:|:---:|:---:|:---:
-0.1 | 2020/02/05 | Initial documentation | Digipolis
+0.1 | 2020/02/05 | Initial version | Digipolis
