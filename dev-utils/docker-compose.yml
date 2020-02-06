@@ -3,10 +3,18 @@ services:
   mssql:
     image: mssql
     ports:
-    - "1433:1433"
+    - "1433: 1433"
   amq:
-    image: registry.access.redhat.com/jboss-amq-6/amq63-openshift
+    image: amq
     ports:
-    - "61616:61616"
+    - "61616:61616" 
     - "61613:61613"
     - "1883:1883"
+  component1:
+    image: component-1
+    ports:
+    - "8080:8080"
+  component2:
+    image: component-2
+    ports:
+    - "8081:8080"
