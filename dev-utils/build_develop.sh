@@ -47,7 +47,10 @@ if [ "$1" != "skip-build" ]; then
   pushd dockers/amq
   ./build.sh
   popd
-  echo ""
+  echo "AMQ"
+  pushd ./dockers/amq/
+  ./build.sh
+  popd
 fi
 
 if [ "$1" != "skip-start" ]; then
