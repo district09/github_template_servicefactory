@@ -12,6 +12,7 @@
 *.jpg binary
 *.jar binary
 *.doc binary
+*.mp3 binary
 
 # Custom for Visual Studio
 *.cs     diff=csharp

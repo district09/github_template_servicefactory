@@ -1,3 +1,9 @@
+## Additions
+*.tmp
+*.bak
+*.swp
+*~.nib
+
 ## Node related
 # Logs
 logs
