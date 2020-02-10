@@ -7,9 +7,10 @@ services:
   amq:
     image: amq
     ports:
-    - "61616:61616" 
+    - "61616:61616"   # Openwire
     - "61613:61613"
     - "1883:1883"
+    - "8161:8161"     # web console
   component1:
     image: component-1
     ports:
