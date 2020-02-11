@@ -63,6 +63,8 @@ Envar | Required | Default | Description
 * DB_PROTOCOL
 * DB_DRIVER
 * DB_CONNECTION_STRING
+* DB_DEFAULT_TTL
+* DB_MAX_TTL
 
 ##### Event broker #####
 * AMQ_USER/AMQ_USER_XXX (Secret)
