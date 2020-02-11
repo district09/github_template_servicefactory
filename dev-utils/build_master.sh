@@ -1,4 +1,3 @@
-
  #!/bin/bash
 #####
 #
@@ -13,39 +12,43 @@
 
 set -e
 
-finish(){
-  # Stop dockers
-  docker-compose down
-
-  # Cleanup old docker images
-  docker rmi $(docker images -f 'dangling=true' -q)
-}
-trap finish EXIT
-
 echo "Cleaning up previous run"
 docker-compose down || true
 echo ""
 
 if [ "$1" != "skip-build" ]; then
   export PATH=$PATH:/usr/local/bin
+  echo "Cleaning up old docker images"
+  docker rmi $(docker images -f 'dangling=true' -q) -f || true
+  echo ""
   echo "Building docker images from source"
   echo ""
-  echo "API"
-  s2i build git@github.com:digipolisgent/java_service_sms.git -r 'master' registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift sms-api -e 'ARTIFACT_DIR=api/target'
-  echo "API docker image built succesfully"
+  echo "$COMPONENT_NAME"
+  s2i build $GIT_REPO_REF -r 'master' $REDHAT_BASE_IMAGE $COMPONENT_NAME \
+    -e 'ARTIFACT_DIR=$COMPONENT1_SRC/target' \
+    -e 'NEXUS_USER=$NEXUS_USER' \
+    -e 'NEXUS_PASSWORD=$NEXUS_PASSWORD'
+  echo "$COMPONENT_NAME docker image built succesfully"
   echo ""
-  echo "Worker"
-  s2i build git@github.com:digipolisgent/java_service_sms.git -r 'master' registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift sms-worker -e 'ARTIFACT_DIR=worker/target'
-  echo "Worker built succesfully"
+  echo "$COMPONENT2_NAME"
+  s2i build $GIT_REPO_REF -r 'master' $REDHAT_BASE_IMAGE $COMPONENT2_NAME \
+    -e 'ARTIFACT_DIR=$COMPONENT2_SRC/target' \
+    -e 'NEXUS_USER=$NEXUS_USER' \
+    -e 'NEXUS_PASSWORD=$NEXUS_PASSWORD'
+  echo "$COMPONENT2_NAME docker image built succesfully"
   echo ""
   echo "Database"
-  pushd dockers/sqlserver
+  pushd ./dockers/mssql/
   ./build.sh
   popd
-  echo "AMQ"
+  echo "Database docker image built succesfully"
+  echo ""
+  echo "Message broker"
   pushd ./dockers/amq/
   ./build.sh
   popd
+  echo "Message broker docker image built succesfully"
+  echo ""
 fi
 
 if [ "$1" != "skip-start" ]; then
