@@ -3,7 +3,7 @@ services:
   mssql:
     image: mssql
     ports:
-    - "1433: 1433"
+    - "1433:1433"
   amq:
     image: amq
     ports:
