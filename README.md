@@ -38,6 +38,8 @@ MAVEN_ARGS | if maven build | see openshift configmap | The Maven arguments used
 ARTIFACT_DIR | if maven build | target | The artifact dir that s2i get its compiled binary's from
 NEXUS_PASSWORD | if using digipolis nexus | in openshift secret | Pasword to connect to the Digipolis Nexus
 NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to the Digipolis Nexus
+DOTNET_RESTORE_SOURCES | if using digipolis myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
+DOTNET_STARTUP_PROJECT | if dotnet build | in openshift config map | The location of the dotnet csproj file that contains the startup project
 
 ## Deployment environment variables ##
 Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
