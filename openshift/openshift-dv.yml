@@ -63,7 +63,7 @@ objects:
       sourceStrategy:
         env:
         - name: ARTIFACT_DIR
-          value: api/target
+          value: src/target
         - name: MAVEN_ARGS
           valueFrom:
             configMapKeyRef:
@@ -79,6 +79,13 @@ objects:
             secretKeyRef:
               name: dg-build-secrets
               key: NEXUS_PASSWORD
+        - name: DOTNET_RESTORE_SOURCES
+          valueFrom:
+            configMapKeyRef:
+              key: DOTNET_RESTORE_SOURCES
+              name: dg-build-configmap
+        - name: DOTNET_STARTUP_PROJECT
+          value: "PATH/TO/startup.csproj"
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
@@ -139,6 +146,13 @@ objects:
             secretKeyRef:
               name: dg-build-secrets
               key: NEXUS_PASSWORD
+        - name: DOTNET_RESTORE_SOURCES
+          valueFrom:
+            configMapKeyRef:
+              key: DOTNET_RESTORE_SOURCES
+              name: dg-build-configmap
+        - name: DOTNET_STARTUP_PROJECT
+          value: "PATH/TO/startup.csproj"
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift:latest
