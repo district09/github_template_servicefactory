@@ -111,6 +111,7 @@ Envar | Required | Default | Description
 ##### For connections with other API's #####
 * API_KEY_XXX (S)
 * API_URL_XXX
+* IDP_OIDC_CLIENTKEY
 
 ## CICD ##
 Mainly [Jenkins](https://jenkins.io/) in combination with [Openshift Container Platform](https://www.openshift.com/) and other cloud based platforms are used for builds and deployments onto the Digipolis Service Factory.
