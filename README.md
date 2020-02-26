@@ -26,6 +26,16 @@ Direct all your security questions and problems to security [dot] office [at] di
 ## Running locally ##
 Read the [documentation](./dev-utils/README.md) provided in the dev-utils folder to build and run the application locally.
 
+## Dependencies
+
+### NodeJS Repository
+
+Use the `.npmrc` file in the root of your project to connect to the *Digipolis NPM repositry* in the *Sonatype Repository manager*. 
+
+https://nexussfqa.gent.be/repository/npm-public/
+
+Inject `NPM_TOKEN` as a environment variable. The value is a base64 representation of your nexus username and nexus passord in the form: `username:password`. See [Build environment variables](#build-environment-variables)
+
 ## Testing the application ##
 We run integration tests on our applications in CICD using the [Karate framework](https://github.com/intuit/karate). See the [testing documentation](./karate/README.md) on how to run the tests locally and more information. 
 
@@ -38,6 +48,7 @@ MAVEN_ARGS | if maven build | see openshift configmap | The Maven arguments used
 ARTIFACT_DIR | if maven build | target | The artifact dir that s2i get its compiled binary's from
 NEXUS_PASSWORD | if using digipolis nexus | in openshift secret | Pasword to connect to the Digipolis Nexus
 NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to the Digipolis Nexus
+NEXUS_CREDENTIALS | if using digipolis nexus for **nodejs builds** | in openshift secret | Base64 Username and password for http authentication
 DOTNET_RESTORE_SOURCES | if using digipolis myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
 DOTNET_STARTUP_PROJECT | if dotnet build | in openshift config map | The location of the dotnet csproj file that contains the startup project
 
