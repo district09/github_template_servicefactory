@@ -18,8 +18,8 @@ echo ""
 
 if [ "$1" != "skip-build" ]; then
   export PATH=$PATH:/usr/local/bin
-  echo "Cleaning up old docker images"
-  docker rmi $(docker images -f 'dangling=true' -q) -f || true
+  echo "Cleaning up dangling docker resources"
+  docker system prune -f || true
   echo ""
   echo "Building docker images from source"
   echo ""

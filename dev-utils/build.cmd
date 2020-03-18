@@ -16,8 +16,8 @@ docker-compose down || true
 echo ""
 
 IF /I NOT "%1" == "skip-build" (
-  echo "Cleaning up old docker images"
-  docker rmi $(docker images -f 'dangling=true' -q) -f || true
+  echo "Cleaning up dangling docker resources"
+  docker system prune -f || true
   echo ""
   echo "Building docker images from source"
   echo ""
