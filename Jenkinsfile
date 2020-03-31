@@ -7,7 +7,8 @@ Set following parameters that will be passed to the shared Jenkins pipeline.
 kind: The type of Jenkins slave that will conduct the CICD build. 
 - maven
 - netcore21
-- netcore22
+- netcore22 (DEPRECATED)
+- netcore31
 - node8
 
 namespace: Openshift namespace without environment suffix, i.e.:
