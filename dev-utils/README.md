@@ -9,10 +9,17 @@
 ### .NetCore ###
 Add nuget.config to your local setup. Add Digipolis Myget.org credentials to nuget.config. Ask servicefactory [at] digipolis [dot] gent for credentials.
 Find more information on nuget.config [here](https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior). 
+
 ### Java ###
 All required configuration files are provided in this repository.
 Set envars for NEXUS_USER & NEXUS_PASSWORD. Ask servicefactory [at] digipolis [dot] gent for credentials.
+
 ### Node ###
+Use the `.npmrc` file in the root of your project to connect to the *Digipolis NPM repositry* in the *Sonatype Repository manager*. 
+
+https://nexussfqa.gent.be/repository/npm-public/
+
+Inject `NPM_TOKEN` as a environment variable. The value is a base64 representation of your nexus username and nexus passord in the form: `username:password`. See [Build environment variables](#build-environment-variables)
 
 ## Environmental variables ##
 

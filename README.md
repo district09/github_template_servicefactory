@@ -28,13 +28,7 @@ Read the [documentation](./dev-utils/README.md) provided in the dev-utils folder
 
 ## Dependencies
 
-### NodeJS Repository
-
-Use the `.npmrc` file in the root of your project to connect to the *Digipolis NPM repositry* in the *Sonatype Repository manager*. 
-
-https://nexussfqa.gent.be/repository/npm-public/
-
-Inject `NPM_TOKEN` as a environment variable. The value is a base64 representation of your nexus username and nexus passord in the form: `username:password`. See [Build environment variables](#build-environment-variables)
+Check out the available dependency and package managers in the [documentation](./dev-utils/README.md) under Digipolis Package Repositories. 
 
 ## Testing the application ##
 We run integration tests on our applications in CICD using the [Karate framework](https://github.com/intuit/karate). See the [testing documentation](./karate/README.md) on how to run the tests locally and more information. 
