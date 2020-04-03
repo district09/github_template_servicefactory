@@ -1,6 +1,10 @@
 # README #
 *Insert short description of the application here.*
 
+## Features ##
+
+Check the [API's features](./openapi/FEATURES.MD).
+
 ## Security ##
 Always keep following security rules in mind when using credentials (apiKeys, passwords, tenantId's, secrets, ...). By asking and using Digipolis credentials you agree to and respect these security rules. Share there rules among all developers.
 
@@ -145,3 +149,4 @@ Find the latest version of this template repository [here](https://github.com/di
 Version | Date | Description | Author
 :---:|:---:|:---:|:---:
 0.1 | 2020/02/05 | Initial version | Digipolis
+0.2 | 2020/04/03 | Add API Features | Digipolis
