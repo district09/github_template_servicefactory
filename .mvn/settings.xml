@@ -4,7 +4,7 @@
         <mirror>
             <id>digipolis_nexus</id>
             <name>Maven Repository Manager at Digipolis</name>
-            <url>http://nexus-release-management.servicesqa.local/repository/maven-public/</url>
+            <url>https://nexussfqa.gent.be/repository/maven-public/</url>
             <mirrorOf>*</mirrorOf>
         </mirror>
     </mirrors>
