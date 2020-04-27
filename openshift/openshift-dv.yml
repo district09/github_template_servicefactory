@@ -46,7 +46,7 @@ objects:
     completionDeadlineSeconds: 600
     resources:
       limits:
-        cpu: 400m
+        cpu: 250m
         memory: 512Mi
       requests:
         cpu: 10m
@@ -118,7 +118,7 @@ objects:
     completionDeadlineSeconds: 600
     resources:
       limits:
-        cpu: 400m
+        cpu: 250m
         memory: 512Mi
       requests:
         cpu: 10m
@@ -271,7 +271,7 @@ objects:
             protocol: TCP
           resources: 
             limits:
-              cpu: 400m
+              cpu: 250m
               memory: 512Mi
             requests:
               cpu: 10m
@@ -390,7 +390,7 @@ objects:
             protocol: TCP
           resources: 
             limits:
-              cpu: 400m
+              cpu: 250m
               memory: 512Mi
             requests:
               cpu: 10m
