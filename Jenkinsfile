@@ -21,4 +21,12 @@ service: Array with names of the components to be build and deployed by CICD, i.
 
 **/
 
-dgPipeline kind: "$kind", namespace: "$namespace", service: ["$component1","$component2"]
+dgPipeline  kind: "$kind", 
+            namespace: "$namespace", 
+            service: ["$component1","$component2"],
+            buildScript: "", 
+            templatepath: "", 
+            dotnetFolder: "",
+            dotnetSlnFile: "", 
+            dotnetTestFolder: "",
+            dotnetTestFile: ""

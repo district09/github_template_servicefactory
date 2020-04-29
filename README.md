@@ -8,18 +8,19 @@ Check the [API's features](./openapi/FEATURES.MD).
 ## Security ##
 Always keep following security rules in mind when using credentials (apiKeys, passwords, tenantId's, secrets, ...). By asking and using Digipolis credentials you agree to and respect these security rules. Share there rules among all developers.
 
-Direct all your security questions and problems to security [dot] office [at] digipolis [dot] gent
+Direct all your security questions and problems to security [dot] officer [at] digipolis [dot] gent
 
-### Do's ### 
-* Always store credentials in environment variables
-* If not possible check if alternatives exist for your technology
-* Share credentials using point-to-point communication (email, im, ...) (not: ticketing systems, group chats, ...)
-* Avoid sharing credentials after initial exchange
-### Don'ts ### 
-* Don't hard code credentials
-* Don't communicate credentials with clients (client side storage, client side code, ...)
-* Don't store credentials in public or private repositories (Github, Bitbucket, ...)
-* Don't store credentials in documentation (Confluence, Jira, ...)
+### Do's ### 
+* Store credentials in a password manager. Use by example the Digipolis Passwordstate.   
+* Use environment variables to make credentials available to your applications.
+* If this is not possible check for secure alternatives for your technology
+* Share credentials using point-to-point communication and only to the people that need the credentials.  (email, im, ...) (not: ticketing systems, group chats, reply all email, ...). 
+* Avoid sharing credentials after initial exchange
+### Don'ts ### 
+* Don't hard code credentials
+* Don't communicate credentials with clients (client side storage, client side code, ...)
+* Don't store credentials in public or private repositories (Github, Bitbucket, ...)
+* Don't store credentials in documentation (Confluence, Jira, ...)
 
 ## Source code ##
 * Add all source code to the [src](./src) folder.
