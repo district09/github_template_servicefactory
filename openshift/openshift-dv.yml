@@ -84,7 +84,7 @@ objects:
             configMapKeyRef:
               key: DOTNET_RESTORE_SOURCES
               name: dg-build-configmap
-        - name: NPM_TOKEN
+        - name: NEXUS_CREDENTIALS
           valueFrom:
             secretKeyRef:
               name: dg-build-secrets

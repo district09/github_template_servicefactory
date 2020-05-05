@@ -19,7 +19,7 @@ Use the `.npmrc` file in the root of your project to connect to the *Digipolis N
 
 https://nexussfqa.gent.be/repository/npm-public/
 
-Inject `NPM_TOKEN` as a environment variable. The value is a base64 representation of your nexus username and nexus passord in the form: `username:password`. See [Build environment variables](#build-environment-variables)
+Inject `NEXUS_CREDENTIALS` as a environment variable. The value is a base64 representation of your nexus username and nexus passord in the form: `username:password`. See [Build environment variables](#build-environment-variables)
 
 ## Environmental variables ##
 
