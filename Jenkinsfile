@@ -19,6 +19,11 @@ service: Array with names of the components to be build and deployed by CICD, i.
 - ["jobsheduler-api"]
 - ["email-api","email-worker"]
 
+dotnetFolder: base path of source code
+dotnetSlnFile: path from base path to csproj file. Use sln file in netcore31 and up!
+donetTestFoder: folder that contains csproj file for tests. We prefix the dotnetFolder in the background!
+dotnetTestFile: name of the test csproj file
+
 **/
 
 dgPipeline  kind: "$kind", 
