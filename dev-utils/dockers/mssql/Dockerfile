@@ -1,5 +1,7 @@
 FROM microsoft/mssql-server-linux:latest
 
+USER root
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -11,7 +13,7 @@ ENV SA_PASSWORD=DEV-pw-123
 COPY . /usr/src/app
 
 # Grant permissions for the import-data script to be executable
-RUN chmod +x ./import-data.sh
+RUN chmod +x ./*.sh
 
 CMD /bin/bash ./entrypoint.sh
 

@@ -1,5 +1,5 @@
 #wait for the SQL Server to come up
-sleep 30s
+sleep 45s
 
 echo "CREATING DATABASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
