@@ -1,0 +1,138 @@
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    name: component-api
+    namespace: openshiftprojectdv
+    labels:
+      app: notification-component
+      component: component-api
+  spec:
+    replicas: 1
+    selector:
+      app: notification-component
+      component: component-api
+    strategy:
+      activeDeadlineSeconds: 660
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        name: component-api
+        namespace: openshiftprojectdv
+        labels:
+          app: notification-component
+          component: component-api
+      spec:
+        containers:
+        - env:
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: component-secrets
+                key: DB_PASSWORD
+          - name: DB_USER
+            valueFrom: 
+              secretKeyRef:
+                name: component-secrets
+                key: DB_USER
+          - name: AMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: component-secrets
+                key: AMQ_PASSWORD
+          - name: AMQ_USER
+            valueFrom:
+              secretKeyRef:
+                name: component-secrets
+                key: AMQ_USER
+          - name: AMQ_HOST
+            value: ""
+          - name: AMQ_POOL
+            value: "true"
+          - name: AMQ_QUEUE_PREFIX
+            value: businessdomaindv.notification-services.v1.component
+          - name: AMQ_QUEUE_CREATION
+            value: creation
+          - name: AMQ_QUEUE_UPDATE
+            value: update
+          - name: AMQ_QUEUE_ARCHIVE
+            value: archive
+          - name: AMQ_QUEUE_COMPLETION
+            value: completion
+          - name: DB_HOST
+            value: ""
+          - name: SPRING_PROFILES_ACTIVE
+            value: "production"
+          - name: "APP_NAMESPACE_PREFIX"
+            value: "businessdomain/component"
+          - name: "APP_LOG_LEVEL"
+            value: "INFO"
+          - name: "APP_MOCKING"
+            value: "FALSE"
+          image: docker-registry.default.svc:5000/openshiftprojectdv/component-api:qa
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /businessdomain/component/v2/status/am-i-up
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /businessdomain/component/v2/status/aggregate
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: component-api
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: 
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 10m
+              memory: 25Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers: []
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: component-api
+    namespace: openshiftprojectdv
+    labels:
+      app: notification-component
+      component: component-api
+  spec:
+    ports:
+    - name: tcp-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: notification-component
+      component: component-api
+    sessionAffinity: None
+    type: ClusterIP
