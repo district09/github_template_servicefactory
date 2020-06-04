@@ -151,3 +151,4 @@ Version | Date | Description | Author
 :---:|:---:|:---:|:---:
 0.1 | 2020/02/05 | Initial version | Digipolis
 0.2 | 2020/04/03 | Add API Features | Digipolis
+0.3 | 2020/06/04 | Added additional karate test documentation | Digipolis
