@@ -9,7 +9,7 @@ objects:
   kind: ImageStream
   metadata:
     name: component-api
-    namespace: openshiftprojectdv
+    namespace: ${NAMESPACE}
     labels:
       app: notification-component
       component: component-api
