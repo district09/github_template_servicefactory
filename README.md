@@ -55,10 +55,6 @@ NEXUS_CREDENTIALS | if using digipolis nexus for **nodejs builds** | in openshif
 DOTNET_RESTORE_SOURCES | if using digipolis myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
 DOTNET_STARTUP_PROJECT | if dotnet build | in openshift config map | The location of the dotnet csproj file that contains the startup project
 
-test | test
----|---
-test | test
-
 ## Deployment environment variables ##
 Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
 
