@@ -10,17 +10,21 @@ Always keep following security rules in mind when using credentials (apiKeys, pa
 
 Direct all your security questions and problems to security [dot] officer [at] digipolis [dot] gent
 
-### Do's ### 
-* Store credentials in a password manager. Use by example the Digipolis Passwordstate.   
-* Use environment variables to make credentials available to your applications.
-* If this is not possible check for secure alternatives for your technology
-* Share credentials using point-to-point communication and only to the people that need the credentials.  (email, im, ...) (not: ticketing systems, group chats, reply all email, ...). 
-* Avoid sharing credentials after initial exchange
-### Don'ts ### 
-* Don't hard code credentials
-* Don't communicate credentials with clients (client side storage, client side code, ...)
-* Don't store credentials in public or private repositories (Github, Bitbucket, ...)
-* Don't store credentials in documentation (Confluence, Jira, ...)
+### Do's ###
+
+* Store credentials in a password manager. Use by example the Digipolis Passwordstate.
+* Use environment variables to make credentials available to your applications.
+* If this is not possible check for secure alternatives for your technology
+* Share credentials using point-to-point communication and only to the people that need the credentials.  (email, im, ...) (not: ticketing systems, group chats, reply all email, ...).
+* Avoid sharing credentials after initial exchange
+
+### Don'ts ###
+
+* Don't hard code credentials
+* Don't communicate credentials with clients
+* client side storage, client side code, ...)
+* Don't store credentials in public or private repositories (Github, Bitbucket, ...)
+*  Don't store credentials in documentation (Confluence, Jira, ...)
 
 ## Source code ##
 * Add all source code to the [src](./src) folder.
@@ -50,6 +54,10 @@ NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to
 NEXUS_CREDENTIALS | if using digipolis nexus for **nodejs builds** | in openshift secret | Base64 Username and password for http authentication
 DOTNET_RESTORE_SOURCES | if using digipolis myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
 DOTNET_STARTUP_PROJECT | if dotnet build | in openshift config map | The location of the dotnet csproj file that contains the startup project
+
+test | test
+---|---
+test | test
 
 ## Deployment environment variables ##
 Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
