@@ -62,13 +62,7 @@ test | test
 ## Deployment environment variables ##
 Here you will find all environment variables used to deploy the application to docker or openshift. Feed these envars to your local deployment or openshift deployment config.
 
-#### component-1 ####
-Envar | Required | Default | Description
-:---|:---:|:---:|:---
-1 | **yes** | default | 2
-2 | no | no-default | 3
-
-#### component-2 ####
+#### component-name ####
 Envar | Required | Default | Description
 :---|:---:|:---:|:---
 1 | **yes** | default | 2
@@ -131,6 +125,22 @@ Envar | Required | Default | Description
 * API_URL_XXX
 * IDP_OIDC_CLIENTKEY
 
+## Monitoring & Logging ##
+#### APM ####
+We provide 4 variables in a Openshift secret (apm-secrets) to connect to our Elastic APM. This secret is available in all our Openshift projects.  
+* SECRETTOKEN 
+* SERVERURL
+* SERVERCERT
+* CENTRALCONFIG
+
+You MUST add 2 specific variables in the templates so APM knows what it is monitoring
+* Service name
+* Service environment (DV, QA or PR)
+
+All 6 variables MUST be added to the deployment configurations!
+
+To find out what specific environment variabels to map in your code see the [APM Agents documentation](https://www.elastic.co/guide/en/apm/agent/index.html).
+
 ## CICD ##
 Mainly [Jenkins](https://jenkins.io/) in combination with [Openshift Container Platform](https://www.openshift.com/) and other cloud based platforms are used for builds and deployments onto the Digipolis Service Factory.
 
@@ -160,3 +170,4 @@ Version | Date | Description | Author
 0.1 | 2020/02/05 | Initial version | Digipolis
 0.2 | 2020/04/03 | Add API Features | Digipolis
 0.3 | 2020/06/04 | Added additional karate test documentation | Digipolis
+0.4 | 2020/08/14 | Added parameters to Openshift templates & APM | Digipolis
