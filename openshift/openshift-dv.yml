@@ -212,7 +212,7 @@ objects:
                 name: apm-secrets
                 key: CENTRALCONFIG
           - name: APM_SERVICE_NAME
-            value: ${APM_SERVICE_NAME]
+            value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'DV'
           image: docker-registry.default.svc:5000/${NAMESPACE}dv/${NAME}:latest

@@ -129,7 +129,7 @@ objects:
                 name: apm-secrets
                 key: CENTRALCONFIG
           - name: APM_SERVICE_NAME
-            value: ${APM_SERVICE_NAME]
+            value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'PR'
           image: docker-registry.default.svc:5000/${NAMESPACE}pr/${NAME}:approved_qa
