@@ -18,8 +18,8 @@ parameters:
   description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
   value: src/target
 - name: IMAGE_TAG
-  description: Tag of the image, if a staging environement is used, use `approved_st` instead.
-  value: "approved_qa"
+  description: Tag of the image
+  value: "qa_approved"
 - name: DOTNET_STARTUP_PROJECT
   description: Remove ARTIFACT_DIR when using this! Used to select the project to run. This must be the folder in the source repository containing the project file.
   value: path/to/startup.csproj
@@ -28,7 +28,7 @@ parameters:
   value: openjdk18-openshift|dotnet-21-rhel7 (deprecated)|dotnet-31-rhel7|nodejs-10|nginx-114|...
 - name: APM_SERVICE_NAME
   description: The Elastic APM service name should be written in full and contain the environment. 
-  value: Servicename API PR | Servicename WORKER PR | Servicename DATAFETCH PR | ...
+  value: Servicename API ST | Servicename WORKER ST | Servicename DATAFETCH ST | ...
 apiVersion: v1
 kind: Template
 metadata:
@@ -38,7 +38,7 @@ objects:
   kind: DeploymentConfig
   metadata:
     name: ${NAME}
-    namespace: ${NAMESPACE}pr
+    namespace: ${NAMESPACE}st
     labels:
       app: ${APP}
       component: ${NAME}
@@ -60,7 +60,7 @@ objects:
     template:
       metadata:
         name: ${NAME}
-        namespace: ${NAMESPACE}pr
+        namespace: ${NAMESPACE}st
         labels:
           app: ${APP}
           component: ${NAME}
@@ -92,7 +92,7 @@ objects:
           - name: AMQ_POOL
             value: "true"
           - name: AMQ_QUEUE_PREFIX
-            value: ${NAMESPACE}pr.${APPLICATION}.v1.${NAME}.
+            value: ${NAMESPACE}st.${APPLICATION}.v1.${NAME}.
           - name: AMQ_QUEUE_CREATION
             value: creation
           - name: AMQ_QUEUE_UPDATE
@@ -134,8 +134,8 @@ objects:
           - name: APM_SERVICE_NAME
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
-            value: 'PR'
-          image: docker-registry.default.svc:5000/${NAMESPACE}pr/${NAME}:${IMAGE_TAG}
+            value: 'QA'
+          image: docker-registry.default.svc:5000/${NAMESPACE}dv/${NAME}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 30
@@ -181,7 +181,7 @@ objects:
   kind: Service
   metadata:
     name: ${NAME}
-    namespace: ${NAMESPACE}pr
+    namespace: ${NAMESPACE}st
     labels:
       app: ${APP}
       component: ${NAME}
