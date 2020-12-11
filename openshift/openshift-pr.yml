@@ -17,6 +17,9 @@ parameters:
 - name: ARTIFACT_DIR
   description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
   value: src/target
+- name: IMAGE_TAG
+  description: Tag of the image
+  value: "approved_qa"
 - name: DOTNET_STARTUP_PROJECT
   description: Remove ARTIFACT_DIR when using this! Used to select the project to run. This must be the folder in the source repository containing the project file.
   value: path/to/startup.csproj
@@ -132,7 +135,7 @@ objects:
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'PR'
-          image: docker-registry.default.svc:5000/${NAMESPACE}pr/${NAME}:approved_qa
+          image: docker-registry.default.svc:5000/${NAMESPACE}pr/${NAME}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 30
