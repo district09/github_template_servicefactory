@@ -26,7 +26,7 @@ dotnetTestFile: name of the test csproj file
 
 **/
 
-dgPipeline  kind: "$kind", 
+d09Pipeline kind: "$kind", 
             namespace: "$namespace", 
             service: ["$component1","$component2"],
             buildScript: "", 
