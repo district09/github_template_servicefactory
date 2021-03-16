@@ -2,31 +2,22 @@
 
 /**
 
-Set following parameters that will be passed to the shared Jenkins pipeline. 
+## Parameters
 
-kind: The type of Jenkins slave that will conduct the CICD build. 
-- maven
-- netcore21
-- netcore22 (DEPRECATED)
-- netcore31
-- node8
-
-namespace: Openshift namespace without environment suffix, i.e.:
-- "services" 
-- "dossier"
-
-service: Array with names of the components to be build and deployed by CICD, i.e.:
-- ["jobsheduler-api"]
-- ["email-api","email-worker"]
-
-dotnetFolder: base path of source code
-dotnetSlnFile: path from base path to csproj file. Use sln file in netcore31 and up!
-dotnetTestFolder: folder that contains csproj file for tests. We prefix the dotnetFolder in the background!
-dotnetTestFile: name of the test csproj file
+* `kind`: The kind of project that needs to be build. This refers to the jenkins slave needed to do a basic build of the project. Possible values are `maven`, `nodejs`, `node10`, `netcore21`, `netcore22`, ... (Required)
+* `namespace`: The project namespace without suffix (Required) 
+* `service`: Arrays of all services that need to be build (Required)
+* `buildScript`: Custom buildscript that will run during the `Build and test` stage. Overrides the *default build and test execution*.
+* `templatepath`: Use to override default openshift templates path. Default path is "root/openshift/" (Optional)
+* `dotnetFolder`: 
+* `dotnetSlnFile`: 
+* `dotnetTestFolder`: 
+* `dotnetTestFile`: 
+* `mainBranch`: Overwrites the main branch (default: `master`).
 
 **/
 
-dgPipeline  kind: "$kind", 
+d09Project  kind: "$kind", 
             namespace: "$namespace", 
             service: ["$component1","$component2"],
             buildScript: "", 

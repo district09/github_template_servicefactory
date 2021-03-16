@@ -9,20 +9,14 @@ parameters:
   description: This is the application name of which the component is part of. For exemple the email-api is part of the notification application. 
   value: application-test
 - name: NAMESPACE
-  description: This is the namespace where the component will be deployed. The namespace correspondents with the business domain where the component or application is part of. The environment suffixes dv, qa or pr are allready provided where needed in the template.
-  value: technical
-- name: GITURI
-  description: Git URI of the source code used for s2i builds
-  value: git@github.com:digipolisgent/some_git-repo.git
-- name: ARTIFACT_DIR
-  description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
-  value: src/target
-- name: DOTNET_STARTUP_PROJECT
-  description: Remove ARTIFACT_DIR when using this! Used to select the project to run. This must be the folder in the source repository containing the project file.
-  value: path/to/startup.csproj
-- name: BUILDER_IMAGE
-  description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
-  value: openjdk18-openshift|dotnet-21-rhel7 (deprecated)|dotnet-31-rhel7|nodejs-10|nginx-114|...
+  description: This is the namespace where the component will be deployed. The namespace correspondents with the business domain where the component or application is part of. The environment suffixes dv, qa or pr are allready provided where needed in the template with the ENV variable. 
+  value: namespace
+- name: ENV
+  description: This is the environment suffix, i.e. dv, qa or pr.
+  value: dv
+- name: IMAGE_TAG
+  description: This is the tag of the image that should be deployed. Our CICD will set this property automatically!
+  value: "0"
 - name: APM_SERVICE_NAME
   description: The Elastic APM service name should be written in full and contain the environment. 
   value: Servicename API DV | Servicename WORKER DV | Servicename DATAFETCH DV | ...
@@ -31,94 +25,11 @@ kind: Template
 metadata:
   name: ${NAME}
 objects:
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: ${NAME}
-    namespace: ${NAMESPACE}dv
-    labels:
-      app: ${APP}
-      component: ${NAME}
-  spec:
-    lookupPolicy:
-      local: false
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    name: ${NAME}
-    namespace: ${NAMESPACE}dv
-    labels:
-      app: ${APP}
-      component: ${NAME}
-  spec:
-    failedBuildsHistoryLimit: 2
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ${NAME}:latest
-    postCommit: {}
-    completionDeadlineSeconds: 600
-    resources:
-      limits:
-        cpu: 250m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 25Mi
-    runPolicy: Serial
-    source:
-      git:
-        ref: "master"
-        uri: ${GITURI}
-      sourceSecret:
-        name: digipolisgent-ci
-      type: Git
-    strategy:
-      sourceStrategy:
-        env:
-        - name: ARTIFACT_DIR
-          value: ${ARTIFACT_DIR}
-        - name: MAVEN_ARGS
-          valueFrom:
-            configMapKeyRef:
-              key: MAVEN_ARGS
-              name: dg-build-configmap
-        - name: NEXUS_USER
-          valueFrom:
-            secretKeyRef: 
-              name: dg-build-secrets
-              key: NEXUS_USER
-        - name: NEXUS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: dg-build-secrets
-              key: NEXUS_PASSWORD
-        - name: DOTNET_RESTORE_SOURCES
-          valueFrom:
-            configMapKeyRef:
-              key: DOTNET_RESTORE_SOURCES
-              name: dg-build-configmap
-        - name: NEXUS_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: dg-build-secrets
-              key: NEXUS_CREDENTIALS
-        - name: DOTNET_STARTUP_PROJECT
-          value: ${DOTNET_STARTUP_PROJECT}
-        from:
-          kind: ImageStreamTag
-          name: ${BUILDER_IMAGE}:latest
-        pullSecret:
-          name: imagestreamsecret
-      type: Source
-    successfulBuildsHistoryLimit: 2
-    triggers: []
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
     name: ${NAME}
-    namespace: ${NAMESPACE}dv
+    namespace: ${NAMESPACE}${ENV}
     labels:
       app: ${APP}
       component: ${NAME}
@@ -140,7 +51,7 @@ objects:
     template:
       metadata:
         name: ${NAME}
-        namespace: ${NAMESPACE}dv
+        namespace: ${NAMESPACE}${ENV}
         labels:
           app: ${APP}
           component: ${NAME}
@@ -172,7 +83,7 @@ objects:
           - name: AMQ_POOL
             value: "true"
           - name: AMQ_QUEUE_PREFIX
-            value: ${NAMESPACE}dv.${APPLICATION}.v1.${NAME}.
+            value: ${NAMESPACE}${ENV}.${APPLICATION}.v1.${NAME}.
           - name: AMQ_QUEUE_CREATION
             value: creation
           - name: AMQ_QUEUE_UPDATE
@@ -215,7 +126,7 @@ objects:
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'DV'
-          image: docker-registry.default.svc:5000/${NAMESPACE}dv/${NAME}:latest
+          image: docker-registry.default.svc:5000/${NAMESPACE}${ENV}/${NAME}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 30
@@ -261,7 +172,7 @@ objects:
   kind: Service
   metadata:
     name: ${NAME}
-    namespace: ${NAMESPACE}dv
+    namespace: ${NAMESPACE}${ENV}
     labels:
       app: ${APP}
       component: ${NAME}

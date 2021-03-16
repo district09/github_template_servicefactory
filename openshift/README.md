@@ -3,6 +3,7 @@
 This folder contains the Openshift configuration files required for deployments using our CICD tool and Openshift Application Platform. 
 
 We have a configuration file for each environment. These files contain all necessary templates for a complete Openshift build and deployment.
+* [openshift-build.yml]()
 * [openshift-dv.yml]()
 * [openshift-qa.yml]()
 * [openshift-pr.yml]()
