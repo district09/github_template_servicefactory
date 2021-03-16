@@ -167,3 +167,4 @@ Version | Date | Description | Author
 0.2 | 2020/04/03 | Add API Features | Digipolis
 0.3 | 2020/06/04 | Added additional karate test documentation | Digipolis
 0.4 | 2020/08/14 | Added parameters to Openshift templates & APM | Digipolis
+1.0 | 2021/03/16 | Added EUPL v. 1.2 License & switched to new d09Project pipeline | District09
