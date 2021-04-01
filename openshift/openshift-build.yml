@@ -84,6 +84,11 @@ objects:
             configMapKeyRef:
               key: MAVEN_ARGS
               name: dg-build-configmap
+        - name: MVN_ADDITIONAL_ARGS
+          valueFrom:
+            configMapKeyRef:
+              key: MVN_ADDITIONAL_ARGS
+              name: dg-build-configmap
         - name: NEXUS_USER
           valueFrom:
             secretKeyRef: 
