@@ -4,7 +4,7 @@ info:
   version: "1.0"
   title: SERVICENAME API
   contact:
-    email: servicefactory@digipolis.gent
+    email: servicefactory@district09.gent
 host: 'apidgdv.gent.be:443'
 basePath: /supporting/email/v2
 schemes:

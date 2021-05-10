@@ -126,7 +126,7 @@ objects:
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'QA'
-          image: docker-registry.default.svc:5000/${NAMESPACE}dv/${NAME}:${IMAGE_TAG}
+          image: docker-registry.default.svc:5000/d09build/${NAME}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

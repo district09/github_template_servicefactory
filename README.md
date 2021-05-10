@@ -8,7 +8,7 @@ Check the [API's features](./openapi/FEATURES.MD).
 ## Security ##
 Always keep following security rules in mind when using credentials (apiKeys, passwords, tenantId's, secrets, ...). By asking and using Digipolis credentials you agree to and respect these security rules. Share there rules among all developers.
 
-Direct all your security questions and problems to security [dot] officer [at] digipolis [dot] gent
+Direct all your security questions and problems to security [dot] officer [at] district09 [dot] gent
 
 ### Do's ###
 
@@ -49,10 +49,10 @@ Envar | Required | Default | Description
 :---|:---:|:---:|:---
 MAVEN_ARGS | if maven build | see openshift configmap | The Maven arguments used in a s2i build
 ARTIFACT_DIR | if maven build | target | The artifact dir that s2i get its compiled binary's from
-NEXUS_PASSWORD | if using digipolis nexus | in openshift secret | Pasword to connect to the Digipolis Nexus
-NEXUS_USER | if using digipolis nexus | in openshift secret | User to connect to the Digipolis Nexus
-NEXUS_CREDENTIALS | if using digipolis nexus for **nodejs builds** | in openshift secret | Base64 Username and password for http authentication
-DOTNET_RESTORE_SOURCES | if using digipolis myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
+NEXUS_PASSWORD | if using District09 nexus | in openshift secret | Pasword to connect to the Digipolis Nexus
+NEXUS_USER | if using District09 nexus | in openshift secret | User to connect to the Digipolis Nexus
+NEXUS_CREDENTIALS | if using District09 nexus for **nodejs builds** | in openshift secret | Base64 Username and password for http authentication
+DOTNET_RESTORE_SOURCES | if using District09 myget / nuget repositories | in openshift secret | Authorization URI that points to the nuget repositories
 DOTNET_STARTUP_PROJECT | if dotnet build | in openshift config map | The location of the dotnet csproj file that contains the startup project
 
 ## Deployment environment variables ##
@@ -145,21 +145,21 @@ See the [Jenkinsfile](./Jenkinsfile) to define the CICD pipiline.
 See the [openshift](./openshift/README.md) folder to define the Openshift configuration. 
 
 ## Issues ##
-Log and track issues in our [Jira](https://digipolisgent.atlassian.net/)
+Log and track issues in our [Jira](https://district09.atlassian.net/)
 
 ### Architecture ###
 *Insert Architecture Design here.*
 
 ## API Documentation ##
-* [Digipolis API Guidelines](https://github.com/digipolisgent/api-guidelines)
-* [Service Factory Confluence](https://digipolisgent.atlassian.net/wiki/spaces/SF/overview)
+* [Digipolis API Guidelines](https://github.com/district09/api-guidelines)
+* [Service Factory Confluence](https://district09.atlassian.net/wiki/spaces/SF/overview)
 * [Developer Portal DV](https://developerdv.gent.be/)
 * [Developer Portal DV](https://developerqa.gent.be/)
 * [Developer Portal DV](https://developer.gent.be/)
 
 ## Documentation Version ##
 
-Find the latest version of this template repository [here](https://github.com/digipolisgent/github_template_servicefactory) on Github. 
+Find the latest version of this template repository [here](https://github.com/district09/github_template_servicefactory) on Github. 
 
 Version | Date | Description | Author
 :---:|:---:|:---:|:---:
@@ -168,3 +168,4 @@ Version | Date | Description | Author
 0.3 | 2020/06/04 | Added additional karate test documentation | Digipolis
 0.4 | 2020/08/14 | Added parameters to Openshift templates & APM | Digipolis
 1.0 | 2021/03/16 | Added EUPL v. 1.2 License & switched to new d09Project pipeline | District09
+1.1 | 2021/05/10 | Changed all Digipolis references to District09
