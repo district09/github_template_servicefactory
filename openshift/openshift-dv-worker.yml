@@ -4,10 +4,10 @@ parameters:
   value: FIRST
 - name: NAME
   description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
-  value: test-api
+  value: test-worker
 - name: APP
-  description: This is the application name of which the component is part of. For exemple the email-api is part of the notification application. 
-  value: application-test
+  description: This is the application name of which the component is part of. For exemple the test-api is part of the notification application. 
+  value: test
 - name: NAMESPACE
   description: This is the namespace where the component will be deployed. The namespace correspondents with the business domain where the component or application is part of. The environment suffixes dv, qa or pr are allready provided where needed in the template with the ENV variable. 
   value: namespace

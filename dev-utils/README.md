@@ -7,12 +7,12 @@
 
 ## Digipolis Package Repositories ##
 ### .NetCore ###
-Add nuget.config to your local setup. Add Digipolis Myget.org credentials to nuget.config. Ask servicefactory [at] digipolis [dot] gent for credentials.
+Add nuget.config to your local setup. Add Digipolis Myget.org credentials to nuget.config. Ask servicefactory [at] district09 [dot] gent for credentials.
 Find more information on nuget.config [here](https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior). 
 
 ### Java ###
 All required configuration files are provided in this repository.
-Set envars for NEXUS_USER & NEXUS_PASSWORD. Ask servicefactory [at] digipolis [dot] gent for credentials.
+Set envars for NEXUS_USER & NEXUS_PASSWORD. Ask servicefactory [at] district09 [dot] gent for credentials.
 
 ### Node ###
 Use the `.npmrc` file in the root of your project to connect to the *Digipolis NPM repositry* in the *Sonatype Repository manager*. 

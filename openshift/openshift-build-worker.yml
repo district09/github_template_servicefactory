@@ -1,13 +1,13 @@
 parameters:
 - name: README
-  description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like resource limits and container specs (environment)!
+  description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like probes, resource limits and container specs (environment)!
   value: FIRST
 - name: NAME
   description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-api
 - name: APP
-  description: This is the application name of which the component is part of. For exemple the email-api is part of the notification application. 
-  value: application-test
+  description: This is the application name of which the component is part of. For exemple the test-api is part of the test application. 
+  value: test
 - name: GITURI
   description: Git URI of the source code used for s2i builds
   value: git@github.com:organisation/some_git-repo.git
@@ -19,7 +19,10 @@ parameters:
   value: path/to/startup.csproj
 - name: BUILDER_IMAGE
   description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
-  value: openjdk18-openshift|dotnet-21-rhel7 (deprecated)|dotnet-31-rhel7|nodejs-10|nginx-114|...
+  value: openjdk18-openshift|dotnet-31-rhel7|nodejs-10|nginx-114|...
+- name: BUILDER_IMAGE_TAG
+  description: You can override the builder image tag with this parameter. Normally latest should do the trick!
+  value: latest|20.3-java11|...
 apiVersion: v1
 kind: Template
 metadata:
@@ -107,9 +110,7 @@ objects:
           value: ${DOTNET_STARTUP_PROJECT}
         from:
           kind: ImageStreamTag
-          name: ${BUILDER_IMAGE}:latest
-        pullSecret:
-          name: imagestreamsecret
+          name: ${BUILDER_IMAGE}:${BUILDER_IMAGE_TAG}
       type: Source
     successfulBuildsHistoryLimit: 2
     triggers: []
