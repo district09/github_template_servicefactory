@@ -8,6 +8,9 @@ parameters:
 - name: APP
   description: This is the application name of which the component is part of. For exemple the test-api is part of the test application. 
   value: test
+- name: NAMESPACE
+  description: This is the namespace where all Openshift builds happen. No need to change this unless communication to do so is received! 
+  value: d09build
 - name: GITURI
   description: Git URI of the source code used for s2i builds
   value: git@github.com:organisation/some_git-repo.git
@@ -19,10 +22,10 @@ parameters:
   value: path/to/startup.csproj
 - name: BUILDER_IMAGE
   description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
-  value: openjdk18-openshift|dotnet-31-rhel7|nodejs-10|nginx-114|...
+  value: dotnet-21; dotnet-31; {nginx-114}; {nginx-116}; nginx-118; {nodejs-8}; {nodejs-10}; {nodejs-12}; nodejs-14; {openjdk-8}; openjdk-11; openjdk-18; python-36; python-38; quarkus
 - name: BUILDER_IMAGE_TAG
   description: You can override the builder image tag with this parameter. Normally latest should do the trick!
-  value: latest|20.3-java11|...
+  value: latest; 20.3-java11; 21.0-java11
 apiVersion: v1
 kind: Template
 metadata:
@@ -32,7 +35,7 @@ objects:
   kind: ImageStream
   metadata:
     name: ${NAME}
-    namespace: d09build
+    namespace: ${NAMESPACE}
     labels:
       app: ${APP}
       component: ${NAME}
@@ -43,7 +46,7 @@ objects:
   kind: BuildConfig
   metadata:
     name: ${NAME}
-    namespace: d09build
+    namespace: ${NAMESPACE}
     labels:
       app: ${APP}
       component: ${NAME}

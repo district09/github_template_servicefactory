@@ -13,7 +13,7 @@ parameters:
   value: namespace
 - name: ENV
   description: This is the environment suffix, i.e. dv, qa or pr.
-  value: dv
+  value: qa
 - name: IMAGE_TAG
   description: This is the tag of the image that should be deployed. Our CICD will set this property automatically!
   value: "0"
@@ -39,13 +39,13 @@ objects:
       app: ${APP}
       component: ${NAME}
     strategy:
-      activeDeadlineSeconds: 120
+      activeDeadlineSeconds: 660
       resources: {}
       rollingParams:
         intervalSeconds: 1
         maxSurge: 25%
         maxUnavailable: 25%
-        timeoutSeconds: 60
+        timeoutSeconds: 600
         updatePeriodSeconds: 1
       type: Rolling
     template:
@@ -125,7 +125,7 @@ objects:
           - name: APM_SERVICE_NAME
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
-            value: 'DV'
+            value: 'QA'
           image: docker-registry.default.svc:5000/d09build/${NAME}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:

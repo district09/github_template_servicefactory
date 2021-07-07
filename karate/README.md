@@ -28,9 +28,6 @@ karate
 		\-- resources
 			|
 			+-- karate-config.js			    !--> ALWAYS HERE <--!
-            +-- karate-config-dv.js			    !--> ALWAYS HERE <--!
-            +-- karate-config-qa.js			    !--> ALWAYS HERE <--!
-            +-- karate-config-pr.js			    !--> ALWAYS HERE <--!
 			+-- healthchecks.feature 		    !--> ALWAYS HERE <--!
 			+-- some-reusable.feature		    !--> ALWAYS HERE <--!
 			+-- logback-test.xml                !-->  OPTIONAL	<--!
@@ -59,17 +56,17 @@ karate
 ## Prerequisites ##
 
 * Have the [application running locally](../dev-utils/README.md).
-* [Postman](https://www.getpostman.com/) or other.
+* [Postman](https://www.getpostman.com/) or any other API test tool.
 
 ## Run the tests ##
 
 From the root folder of the project execute: 
 ```
-./mvnw -s .mvn/settings.xml -f karate/pom.xml test -Dtest=karate.KarateRunner 
+./mvnw -f karate/pom.xml test -Dtest=karate.KarateRunner 
 ```
 You can also select an environment to run tests against:
 ```
-./mvnw -s .mvn/settings.xml -f karate/pom.xml test -Dtest=karate.KarateRunner -Dkarate.env=dv"
+./mvnw -f karate/pom.xml test -Dtest=karate.KarateRunner -Dkarate.env=dv"
 ```
 If you have Maven installed locally you can simplify the commands.
 To run all tests (except @ignore scenario's):
