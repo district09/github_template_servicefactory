@@ -5,6 +5,9 @@ parameters:
 - name: NAME
   description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-worker
+- name: VERSION
+  description: This is the component major version, must follow v[0-9]+ format.
+  value: v3
 - name: APP
   description: This is the application name of which the component is part of. For exemple the test-api is part of the notification application. 
   value: test
@@ -23,67 +26,67 @@ parameters:
 apiVersion: v1
 kind: Template
 metadata:
-  name: ${NAME}
+  name: ${NAME}-${VERSION}
 objects:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
-    name: ${NAME}
+    name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}${ENV}
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
   spec:
     replicas: 1
     selector:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
     strategy:
-      activeDeadlineSeconds: 660
+      activeDeadlineSeconds: 120
       resources: {}
       rollingParams:
         intervalSeconds: 1
         maxSurge: 25%
         maxUnavailable: 25%
-        timeoutSeconds: 600
+        timeoutSeconds: 60
         updatePeriodSeconds: 1
       type: Rolling
     template:
       metadata:
-        name: ${NAME}
+        name: ${NAME}-${VERSION}
         namespace: ${NAMESPACE}${ENV}
         labels:
           app: ${APP}
-          component: ${NAME}
+          component: ${NAME}-${VERSION}
       spec:
         containers:
         - env:
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: ${NAME}-secrets
+                name: ${NAME}-${VERSION}-secrets
                 key: DB_PASSWORD
           - name: DB_USER
             valueFrom: 
               secretKeyRef:
-                name: ${NAME}-secrets
+                name: ${NAME}-${VERSION}-secrets
                 key: DB_USER
           - name: AMQ_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: ${NAME}-secrets
+                name: ${NAME}-${VERSION}-secrets
                 key: AMQ_PASSWORD
           - name: AMQ_USER
             valueFrom:
               secretKeyRef:
-                name: ${NAME}-secrets
+                name: ${NAME}-${VERSION}-secrets
                 key: AMQ_USER
           - name: AMQ_HOST
             value: ""
           - name: AMQ_POOL
             value: "true"
           - name: AMQ_QUEUE_PREFIX
-            value: ${NAMESPACE}${ENV}.${APPLICATION}.v1.${NAME}.
+            value: ${NAMESPACE}${ENV}.${APPLICATION}.${VERSION}.${NAME}.
           - name: AMQ_QUEUE_CREATION
             value: creation
           - name: AMQ_QUEUE_UPDATE
@@ -97,7 +100,7 @@ objects:
           - name: SPRING_PROFILES_ACTIVE
             value: "production"
           - name: "APP_NAMESPACE_PREFIX"
-            value: "${NAMESPACE}/${NAME}"
+            value: "${NAMESPACE}/${NAME}/${VERSION}"
           - name: "APP_LOG_LEVEL"
             value: "INFO"
           - name: "APP_MOCKING"
@@ -126,12 +129,12 @@ objects:
             value: ${APM_SERVICE_NAME}
           - name: APM_ENVIRONMENT
             value: 'DV'
-          image: docker-registry.default.svc:5000/d09build/${NAME}:${IMAGE_TAG}
+          image: docker-registry.default.svc:5000/d09build/${NAME}-${VERSION}:${IMAGE_TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: /${NAMESPACE}/${NAME}/v1/status/am-i-up
+              path: /${NAMESPACE}/${NAME}/${VERSION}/status/am-i-up
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
@@ -141,7 +144,7 @@ objects:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /${NAMESPACE}/${NAME}/v1/status/aggregate
+              path: /${NAMESPACE}/${NAME}/${VERSION}/status/aggregate
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
@@ -171,19 +174,19 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: ${NAME}
+    name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}${ENV}
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
   spec:
     ports:
-    - name: ${NAME}-8080
+    - name: ${NAME}-${VERSION}-8080
       port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
     sessionAffinity: None
     type: ClusterIP

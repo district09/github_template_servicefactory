@@ -5,6 +5,9 @@ parameters:
 - name: NAME
   description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-api
+- name: VERSION
+  description: This is the component major version, must follow v[0-9]+ format.
+  value: v3
 - name: APP
   description: This is the application name of which the component is part of. For exemple the test-api is part of the test application. 
   value: test
@@ -29,34 +32,34 @@ parameters:
 apiVersion: v1
 kind: Template
 metadata:
-  name: ${NAME}
+  name: ${NAME}-${VERSION}
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: ${NAME}
+    name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
   spec:
     lookupPolicy:
       local: false
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: ${NAME}
+    name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
   spec:
     failedBuildsHistoryLimit: 2
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: ${NAME}:latest
+        name: ${NAME}-${VERSION}:latest
     postCommit: {}
     completionDeadlineSeconds: 600
     resources:
