@@ -114,6 +114,8 @@ objects:
         from:
           kind: ImageStreamTag
           name: ${BUILDER_IMAGE}:${BUILDER_IMAGE_TAG}
+        pullSecret:
+          name: redhat-image-puller
       type: Source
     successfulBuildsHistoryLimit: 2
     triggers: []
