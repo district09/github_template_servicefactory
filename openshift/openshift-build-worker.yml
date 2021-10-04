@@ -7,9 +7,9 @@ parameters:
   value: test-api
 - name: VERSION
   description: This is the component major version, must follow v[0-9]+ format.
-  value: v3
+  value: v1
 - name: APP
-  description: This is the application name of which the component is part of. For exemple the test-api is part of the test application. 
+  description: This is the application name of which the component is part of. For example the test-api is part of the test application. 
   value: test
 - name: GITURI
   description: Git URI of the source code used for s2i builds
@@ -22,7 +22,7 @@ parameters:
   value: path/to/startup.csproj
 - name: BUILDER_IMAGE
   description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
-  value: openjdk18-openshift|dotnet-31-rhel7|nodejs-10|nginx-114|...
+  value: dotnet-21; dotnet-31; dotnet-50; {nginx-114}; {nginx-116}; nginx-118; {nodejs-8}; {nodejs-10}; {nodejs-12}; nodejs-14; {openjdk-8}; openjdk-11; openjdk-18; python-36; python-38; quarkus
 - name: BUILDER_IMAGE_TAG
   description: You can override the builder image tag with this parameter. Normally latest should do the trick!
   value: latest|20.3-java11|...
@@ -39,6 +39,7 @@ objects:
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     lookupPolicy:
       local: false
@@ -50,6 +51,7 @@ objects:
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     failedBuildsHistoryLimit: 2
     nodeSelector: null

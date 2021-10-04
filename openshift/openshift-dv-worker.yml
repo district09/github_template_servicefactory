@@ -7,9 +7,9 @@ parameters:
   value: test-worker
 - name: VERSION
   description: This is the component major version, must follow v[0-9]+ format.
-  value: v3
+  value: v1
 - name: APP
-  description: This is the application name of which the component is part of. For exemple the test-api is part of the notification application. 
+  description: This is the application name of which the component is part of. For example the test-api is part of the notification application. 
   value: test
 - name: NAMESPACE
   description: This is the namespace where the component will be deployed. The namespace correspondents with the business domain where the component or application is part of. The environment suffixes dv, qa or pr are allready provided where needed in the template with the ENV variable. 
@@ -21,8 +21,8 @@ parameters:
   description: This is the tag of the image that should be deployed. Our CICD will set this property automatically!
   value: "0"
 - name: APM_SERVICE_NAME
-  description: The Elastic APM service name should be written in full and contain the environment. 
-  value: Servicename API DV | Servicename WORKER DV | Servicename DATAFETCH DV | ...
+  description: The Elastic APM service name should be written in full and be the same for all environments.
+  value: Servicename API | Servicename WORKER | Servicename DATAFETCH | ...
 apiVersion: v1
 kind: Template
 metadata:
@@ -36,6 +36,7 @@ objects:
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     replicas: 1
     selector:
@@ -58,6 +59,7 @@ objects:
         labels:
           app: ${APP}
           component: ${NAME}-${VERSION}
+          version: ${VERSION}
       spec:
         containers:
         - env:
@@ -179,6 +181,7 @@ objects:
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     ports:
     - name: ${NAME}-${VERSION}-8080
