@@ -1,0 +1,126 @@
+parameters:
+- name: README
+  description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like probes, resource limits and container specs (environment)!
+  value: FIRST
+- name: NAME
+  description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
+  value: test-api
+- name: VERSION
+  description: This is the component major version, must follow v[0-9]+ format.
+  value: v1
+- name: APP
+  description: This is the application name of which the component is part of. For example the test-api is part of the test application. 
+  value: test
+- name: NAMESPACE
+  description: This is the namespace where all Openshift builds happen. No need to change this unless communication to do so is received! 
+  value: d09build
+- name: GITURI
+  description: Git URI of the source code used for s2i builds
+  value: git@github.com:organisation/some_git-repo.git
+- name: ARTIFACT_DIR
+  description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
+  value: src/target
+- name: DOTNET_STARTUP_PROJECT
+  description: Remove ARTIFACT_DIR when using this! Used to select the project to run. This must be the folder in the source repository containing the project file.
+  value: path/to/startup.csproj
+- name: BUILDER_IMAGE
+  description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
+  value: dotnet-21; dotnet-31; dotnet-50; {nginx-114}; {nginx-116}; nginx-118; {nodejs-8}; {nodejs-10}; {nodejs-12}; nodejs-14; {openjdk-8}; openjdk-11; openjdk-18; python-36; python-38; quarkus
+- name: BUILDER_IMAGE_TAG
+  description: You can override the builder image tag with this parameter. Normally latest should do the trick!
+  value: latest; 20.3-java11; 21.0-java11
+apiVersion: v1
+kind: Template
+metadata:
+  name: ${NAME}-${VERSION}
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-${VERSION}
+    namespace: ${NAMESPACE}
+    labels:
+      app: ${APP}
+      component: ${NAME}-${VERSION}
+      version: ${VERSION}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: ${NAME}-${VERSION}
+    namespace: ${NAMESPACE}
+    labels:
+      app: ${APP}
+      component: ${NAME}-${VERSION}
+      version: ${VERSION}
+  spec:
+    failedBuildsHistoryLimit: 2
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}-${VERSION}:latest
+    postCommit: {}
+    completionDeadlineSeconds: 600
+    resources:
+      limits:
+        cpu: 250m
+        memory: 512Mi
+      requests:
+        cpu: 10m
+        memory: 25Mi
+    runPolicy: Serial
+    source:
+      git:
+        ref: "master"
+        uri: ${GITURI}
+      sourceSecret:
+        name: district09-ci
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: ARTIFACT_DIR
+          value: ${ARTIFACT_DIR}
+        - name: MAVEN_ARGS
+          valueFrom:
+            configMapKeyRef:
+              key: MAVEN_ARGS
+              name: dg-build-configmap
+        - name: MVN_ADDITIONAL_ARGS
+          valueFrom:
+            configMapKeyRef:
+              key: MVN_ADDITIONAL_ARGS
+              name: dg-build-configmap
+        - name: NEXUS_USER
+          valueFrom:
+            secretKeyRef: 
+              name: dg-build-secrets
+              key: NEXUS_USER
+        - name: NEXUS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dg-build-secrets
+              key: NEXUS_PASSWORD
+        - name: DOTNET_RESTORE_SOURCES
+          valueFrom:
+            configMapKeyRef:
+              key: DOTNET_RESTORE_SOURCES
+              name: dg-build-configmap
+        - name: NEXUS_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: dg-build-secrets
+              key: NEXUS_CREDENTIALS
+        - name: DOTNET_STARTUP_PROJECT
+          value: ${DOTNET_STARTUP_PROJECT}
+        from:
+          kind: ImageStreamTag
+          name: ${BUILDER_IMAGE}:${BUILDER_IMAGE_TAG}
+        pullSecret:
+          name: redhat-image-puller
+      type: Source
+    successfulBuildsHistoryLimit: 2
+    triggers: []

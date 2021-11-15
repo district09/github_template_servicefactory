@@ -16,8 +16,6 @@ docker-compose down || true
 echo ""
 
 IF /I NOT "%1" == "skip-build" (
-  echo "Cleaning up dangling docker resources"
-  docker system prune -f || true
   echo ""
   echo "Building docker images from source"
   echo ""

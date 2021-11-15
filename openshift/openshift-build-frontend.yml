@@ -1,22 +1,22 @@
 parameters:
 - name: README
-  description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like resource limits and container specs (environment)!
+  description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like probes, resource limits and container specs (environment)!
   value: FIRST
 - name: NAME
   description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-api
+- name: VERSION
+  description: This is the component major version, must follow v[0-9]+ format.
+  value: v1
 - name: APP
-  description: This is the application name of which the component is part of. For exemple the email-api is part of the notification application. 
-  value: application-test
+  description: This is the application name of which the component is part of. For example the test-api is part of the test application. 
+  value: test
 - name: NAMESPACE
-  description: This is the namespace where the component will be deployed. The namespace correspondents with the business domain where the component or application is part of. The environment suffixes dv, qa or pr are allready provided where needed in the template with the ENV variable. 
-  value: namespace
-- name: ENV
-  description: This is the environment suffix, i.e. dv, qa or pr.
-  value: dv
+  description: This is the namespace where all Openshift builds happen. No need to change this unless communication to do so is received! 
+  value: d09build
 - name: GITURI
   description: Git URI of the source code used for s2i builds
-  value: git@github.com:digipolisgent/some_git-repo.git
+  value: git@github.com:organisation/some_git-repo.git
 - name: ARTIFACT_DIR
   description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
   value: src/target
@@ -25,38 +25,43 @@ parameters:
   value: path/to/startup.csproj
 - name: BUILDER_IMAGE
   description: s2i builder image used for the Openshift build process. Choose one from the list or ask the Service Factory for other possibilities. 
-  value: openjdk18-openshift|dotnet-21-rhel7 (deprecated)|dotnet-31-rhel7|nodejs-10|nginx-114|...
+  value: dotnet-21; dotnet-31; dotnet-50; {nginx-114}; {nginx-116}; nginx-118; {nodejs-8}; {nodejs-10}; {nodejs-12}; nodejs-14; {openjdk-8}; openjdk-11; openjdk-18; python-36; python-38; quarkus
+- name: BUILDER_IMAGE_TAG
+  description: You can override the builder image tag with this parameter. Normally latest should do the trick!
+  value: latest; 20.3-java11; 21.0-java11
 apiVersion: v1
 kind: Template
 metadata:
-  name: ${NAME}
+  name: ${NAME}-${VERSION}
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: ${NAME}
-    namespace: ${NAMESPACE}${ENV}
+    name: ${NAME}-${VERSION}
+    namespace: d09build
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     lookupPolicy:
       local: false
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: ${NAME}
-    namespace: ${NAMESPACE}${ENV}
+    name: ${NAME}-${VERSION}
+    namespace: d09build
     labels:
       app: ${APP}
-      component: ${NAME}
+      component: ${NAME}-${VERSION}
+      version: ${VERSION}
   spec:
     failedBuildsHistoryLimit: 2
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: ${NAME}:latest
+        name: ${NAME}-${VERSION}:latest
     postCommit: {}
     completionDeadlineSeconds: 600
     resources:
@@ -72,7 +77,7 @@ objects:
         ref: "master"
         uri: ${GITURI}
       sourceSecret:
-        name: digipolisgent-ci
+        name: district09-ci
       type: Git
     strategy:
       sourceStrategy:
@@ -113,9 +118,9 @@ objects:
           value: ${DOTNET_STARTUP_PROJECT}
         from:
           kind: ImageStreamTag
-          name: ${BUILDER_IMAGE}:latest
+          name: ${BUILDER_IMAGE}:${BUILDER_IMAGE_TAG}
         pullSecret:
-          name: imagestreamsecret
+          name: redhat-image-puller
       type: Source
     successfulBuildsHistoryLimit: 2
     triggers: []

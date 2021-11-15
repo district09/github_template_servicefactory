@@ -2,13 +2,22 @@
 
 This folder contains the Openshift configuration files required for deployments using our CICD tool and Openshift Application Platform. 
 
-We have a configuration file for each environment. These files contain all necessary templates for a complete Openshift build and deployment.
-* [openshift-build.yml]()
-* [openshift-dv.yml]()
-* [openshift-qa.yml]()
+We have a configuration file for each environment and each of the components of your application.
+* [openshift-build-api.yml]()
+* [openshift-build-worker.yml]()
+* [openshift-build-frontend.yml]()
+* [openshift-dv-api.yml]()
+* [openshift-dv-worker.yml]()
+* [openshift-dv-frontend.yml]()
+* [openshift-qa-api.yml]()
+* ...
 * [openshift-pr.yml]()
+* ...
 
-*Please do not change the names of the files.*
+The prefix has to be fixed. For builds use "openshift-build-component" and for deployments use "openshift-dv/qa/st/pr-component".
+
+* Do not change the prefixes in the names of the files! 
+* You can add as many components as you like, just know that every component will be build and deployed at the same time!
 
 ## Openshift template #
 
@@ -25,7 +34,7 @@ Additional objects can be used.
 
 ## Parameters ##
 
-Sample templates are provided that use parameters which can be used when creating a single-componet repository. 
+Filling in the parameters for each component in the build & deployment template should be enough to get you started. See environment variables for extra configuration of your application. 
 
 ## Metadata object ##
 

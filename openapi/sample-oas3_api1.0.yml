@@ -4,7 +4,7 @@ info:
   version: "1.0"
   title: SERVICENAME API
   contact:
-    email: servicefactory@digipolis.gent
+    email: servicefactory@district09.gent
 servers:
   - description: District09 API DV Gateway
     url: https://apidgdv:443/{basePath}
