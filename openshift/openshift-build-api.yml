@@ -2,24 +2,21 @@ parameters:
 - name: README
   description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like probes, resource limits and container specs (environment)!
   value: FIRST
-- name: NAME
-  description: This is the component name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
+- name: APP
+  description: This is the app name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-api
 - name: VERSION
-  description: This is the component major version, must follow v[0-9]+ format.
+  description: This is the app major version, must follow v[0-9]+ format.
   value: v1
-- name: APP
-  description: This is the application name of which the component is part of. For example the test-api is part of the test application. 
+- name: APPLICATION
+  description: This is the application name of which the app is part of. For example the test-api is part of the test application. 
   value: test
-- name: NAMESPACE
-  description: This is the namespace where all Openshift builds happen. No need to change this unless communication to do so is received! 
+- name: BUILDER_NAMESPACE
+  description: This is the namespace where all builds happen. No need to change this unless communication to do so is received! 
   value: d09build
 - name: GITURI
   description: Git URI of the source code used for s2i builds
   value: git@github.com:organisation/some_git-repo.git
-- name: ARTIFACT_DIR
-  description: Remove DOTNET_STARTUP_PROJECT when using this! The relative path to the target where JAR files are created for multi-module builds.
-  value: src/target
 - name: DOTNET_STARTUP_PROJECT
   description: Remove ARTIFACT_DIR when using this! Used to select the project to run. This must be the folder in the source repository containing the project file.
   value: path/to/startup.csproj
@@ -38,7 +35,7 @@ objects:
   kind: ImageStream
   metadata:
     name: ${NAME}-${VERSION}
-    namespace: ${NAMESPACE}
+    namespace: ${BUILDER_NAMESPACE}
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
@@ -50,7 +47,7 @@ objects:
   kind: BuildConfig
   metadata:
     name: ${NAME}-${VERSION}
-    namespace: ${NAMESPACE}
+    namespace: ${BUILDER_NAMESPACE}
     labels:
       app: ${APP}
       component: ${NAME}-${VERSION}
@@ -73,6 +70,10 @@ objects:
         memory: 25Mi
     runPolicy: Serial
     source:
+      configMaps:
+      - configMap:
+          name: dg-certificates
+        destinationDir: /etc/certificates
       git:
         ref: "master"
         uri: ${GITURI}

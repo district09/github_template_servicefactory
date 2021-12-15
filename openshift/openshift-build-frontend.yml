@@ -73,6 +73,10 @@ objects:
         memory: 25Mi
     runPolicy: Serial
     source:
+      configMaps:
+      - configMap:
+          name: dg-certificates
+        destinationDir: /etc/certificates
       git:
         ref: "master"
         uri: ${GITURI}
