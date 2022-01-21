@@ -153,7 +153,7 @@ objects:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
-          name: ${NAME}
+          name: ${NAME}-${VERSION}
           ports:
           - containerPort: 8080
             protocol: TCP

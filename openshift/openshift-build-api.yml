@@ -2,7 +2,7 @@ parameters:
 - name: README
   description: These parameters are useful to quickly change some metadata. However, there are still things you MUST change in the template, like probes, resource limits and container specs (environment)!
   value: FIRST
-- name: APP
+- name: NAME
   description: This is the app name which will be also visible in Openshift. Add a suffix like -api, -worker, -sync, -datafetch, ...
   value: test-api
 - name: VERSION
