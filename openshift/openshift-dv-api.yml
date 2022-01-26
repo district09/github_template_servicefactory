@@ -8,7 +8,7 @@ parameters:
 - name: VERSION
   description: This is the component major version, must follow v[0-9]+ format.
   value: v1
-- name: APP
+- name: APPLICATION
   description: This is the application name of which the component is part of. For example the test-api is part of the notification application. 
   value: test
 - name: NAMESPACE
@@ -34,13 +34,13 @@ objects:
     name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}${ENV}
     labels:
-      app: ${APP}
+      app: ${APPLICATION}
       component: ${NAME}-${VERSION}
       version: ${VERSION}
   spec:
     replicas: 1
     selector:
-      app: ${APP}
+      app: ${APPLICATION}
       component: ${NAME}-${VERSION}
     strategy:
       activeDeadlineSeconds: 120
@@ -57,7 +57,7 @@ objects:
         name: ${NAME}-${VERSION}
         namespace: ${NAMESPACE}${ENV}
         labels:
-          app: ${APP}
+          app: ${APPLICATION}
           component: ${NAME}-${VERSION}
           version: ${VERSION}
       spec:
@@ -149,7 +149,7 @@ objects:
               path: /${NAMESPACE}/${NAME}/${VERSION}/status/aggregate
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
@@ -179,7 +179,7 @@ objects:
     name: ${NAME}-${VERSION}
     namespace: ${NAMESPACE}${ENV}
     labels:
-      app: ${APP}
+      app: ${APPLICATION}
       component: ${NAME}-${VERSION}
       version: ${VERSION}
   spec:
@@ -189,7 +189,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      app: ${APP}
+      app: ${APPLICATION}
       component: ${NAME}-${VERSION}
     sessionAffinity: None
     type: ClusterIP
